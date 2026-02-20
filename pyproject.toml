@@ -1,0 +1,13 @@
+[project]
+name = "brainfuck-entity"
+version = "1.0.0"
+description = "A brainfuck interpreter, optimizer, and toolchain -- exploring computational minimalism through radical constraint"
+readme = "README.md"
+requires-python = ">=3.6"
+license = {text = "MIT"}
+
+[project.scripts]
+bf = "interpreters.bf_interpreter:main"
+bf-validate = "tools.bf_validator:main"
+bf-profile = "tools.bf_profiler:main"
+bf-optimize = "interpreters.bf_optimizer:main"
