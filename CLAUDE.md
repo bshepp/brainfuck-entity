@@ -87,6 +87,9 @@ python interpreters/bf_interpreter.py programs/mathematical/add_two_numbers.bf "
 
 # Interactive REPL (state persists between commands)
 python interpreters/bf_interpreter.py --repl
+
+# Limit steps to abort runaway/infinite programs (0 = unlimited)
+python interpreters/bf_interpreter.py programs/hello-world/hello.bf --max-steps 100000
 ```
 
 ### Development Tools

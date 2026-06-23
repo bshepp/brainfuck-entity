@@ -47,6 +47,9 @@ python interpreters/bf_interpreter.py programs/hello-world/hello.bf --debug
 
 # With interactive stdin (auto-enabled when no input argument given)
 python interpreters/bf_interpreter.py programs/games/guess_the_number.bf
+
+# Cap execution to guard against infinite loops (0 = unlimited; default 10,000,000)
+python interpreters/bf_interpreter.py programs/hello-world/hello.bf --max-steps 100000
 ```
 
 ### Creating Your First Program
@@ -156,6 +159,13 @@ python interpreters/bf_optimizer.py programs/hello-world/hello.bf --output optim
 ### Run Tests
 ```bash
 python -m pytest tests/ -v
+# or, equivalently:
+python -m unittest tests.test_interpreter -v
+```
+
+> If `pytest` aborts during plugin collection due to an unrelated global plugin
+> on your machine, disable plugin autoload:
+> `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest tests/ -q`
 ```
 
 ## Learning Path
