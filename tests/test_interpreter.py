@@ -9,7 +9,7 @@ import sys
 import unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-from interpreters.bf_interpreter import BrainfuckInterpreter
+from interpreters.bf_interpreter import BrainfuckInterpreter, BFStepLimitExceeded
 from interpreters.bf_optimizer import optimize, cancel_opposites, remove_clear_loops, remove_dead_code
 from tools.bf_validator import validate
 from tools.bf_profiler import ProfilingInterpreter
@@ -284,6 +284,30 @@ class TestEdgeCases(unittest.TestCase):
         self.assertEqual(interp.memory[0], 255)
         interp.execute('+' * 255 + '+')
         self.assertEqual(interp.memory[0], 0)
+
+
+class TestStepGuard(unittest.TestCase):
+    """Test the infinite-loop step guard on execute()."""
+
+    def test_execute_step_limit_raises(self):
+        interp = BrainfuckInterpreter()
+        with self.assertRaises(BFStepLimitExceeded):
+            interp.execute('+[]', max_steps=100)
+
+    def test_step_limit_is_runtime_error(self):
+        # Subclass of RuntimeError so existing `except RuntimeError` keeps working.
+        self.assertTrue(issubclass(BFStepLimitExceeded, RuntimeError))
+
+    def test_execute_unlimited_with_zero(self):
+        # max_steps=0 disables the cap; a finite program still completes.
+        interp = BrainfuckInterpreter()
+        result = interp.execute('+' * 65 + '.', max_steps=0)
+        self.assertEqual(result, 'A')
+
+    def test_default_cap_does_not_break_normal_program(self):
+        interp = BrainfuckInterpreter()
+        result = interp.execute('+' * 66 + '.')  # 'B', far under 10M steps
+        self.assertEqual(result, 'B')
 
 
 class TestOptimizer(unittest.TestCase):

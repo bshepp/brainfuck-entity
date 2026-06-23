@@ -8,6 +8,14 @@ import sys
 from typing import List, Optional
 
 
+class BFStepLimitExceeded(RuntimeError):
+    """Raised when a program exceeds its step budget (likely an infinite loop).
+
+    Subclasses RuntimeError so callers using `except RuntimeError` still catch it.
+    """
+    pass
+
+
 class BrainfuckInterpreter:
     """
     Pure implementation of a brainfuck interpreter.
@@ -75,15 +83,17 @@ class BrainfuckInterpreter:
         """Set input for the program."""
         self.input_buffer = list(input_data.encode('utf-8'))
     
-    def execute(self, code: str, input_data: str = "", debug: bool = False) -> str:
+    def execute(self, code: str, input_data: str = "", debug: bool = False,
+                max_steps: int = 10_000_000) -> str:
         """
         Execute a brainfuck program.
-        
+
         Args:
             code: Brainfuck source code
             input_data: Input string for the program
             debug: Enable debug output
-            
+            max_steps: Maximum steps before raising BFStepLimitExceeded (0 = unlimited)
+
         Returns:
             Program output as string
         """
@@ -98,7 +108,12 @@ class BrainfuckInterpreter:
         while self.instruction_pointer < len(program):
             command = program[self.instruction_pointer]
             self.instruction_count += 1
-            
+
+            if max_steps and self.instruction_count > max_steps:
+                raise BFStepLimitExceeded(
+                    f"exceeded {max_steps:,} steps -- possible infinite loop"
+                )
+
             if debug and self.instruction_count <= 100:  # Limit debug output
                 print(f"Step {self.instruction_count}: {command} | "
                       f"Ptr: {self.pointer} | "
@@ -152,12 +167,8 @@ class BrainfuckInterpreter:
             self.instruction_pointer += 1
         
         # Convert output to string
-        try:
-            result = bytes(self.output).decode('utf-8')
-        except UnicodeDecodeError:
-            # If decode fails, represent as byte values
-            result = ''.join(chr(b) if 32 <= b <= 126 else f'\\x{b:02x}' for b in self.output)
-        
+        result = self._decode_output()
+
         if debug:
             print(f"Execution completed in {self.instruction_count} steps")
             print(f"Final output: {repr(result)}")
@@ -211,6 +222,15 @@ class BrainfuckInterpreter:
             return bytes(self.output).decode('utf-8')
         except UnicodeDecodeError:
             return ''.join(chr(b) if 32 <= b <= 126 else f'\\x{b:02x}' for b in self.output)
+
+    def _decode_output(self) -> str:
+        """Decode collected output bytes to a string, with a printable-hex fallback."""
+        try:
+            return bytes(self.output).decode('utf-8')
+        except UnicodeDecodeError:
+            return ''.join(
+                chr(b) if 32 <= b <= 126 else f'\\x{b:02x}' for b in self.output
+            )
 
     def get_memory_dump(self, start: int = 0, end: Optional[int] = None) -> List[int]:
         """
