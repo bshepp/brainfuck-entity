@@ -175,7 +175,7 @@ class BrainfuckInterpreter:
         
         return result
     
-    def execute_repl(self, code: str, input_data: str = "") -> str:
+    def execute_repl(self, code: str, input_data: str = "", max_steps: int = 10_000_000) -> str:
         """
         Execute brainfuck code while preserving machine state between calls.
         Unlike execute(), memory, pointer position, and output persist.
@@ -183,13 +183,19 @@ class BrainfuckInterpreter:
         program = self.load_program(code)
         if input_data:
             self.input_buffer.extend(list(input_data.encode('utf-8')))
-        
+
         self.instruction_pointer = 0
         self.output = []
-        
+        start_count = self.instruction_count
+
         while self.instruction_pointer < len(program):
             command = program[self.instruction_pointer]
             self.instruction_count += 1
+
+            if max_steps and self.instruction_count - start_count > max_steps:
+                raise BFStepLimitExceeded(
+                    f"exceeded {max_steps:,} steps -- possible infinite loop"
+                )
             
             if command == '>':
                 self.pointer = (self.pointer + 1) % self.memory_size
@@ -218,10 +224,7 @@ class BrainfuckInterpreter:
             
             self.instruction_pointer += 1
         
-        try:
-            return bytes(self.output).decode('utf-8')
-        except UnicodeDecodeError:
-            return ''.join(chr(b) if 32 <= b <= 126 else f'\\x{b:02x}' for b in self.output)
+        return self._decode_output()
 
     def _decode_output(self) -> str:
         """Decode collected output bytes to a string, with a printable-hex fallback."""

@@ -309,6 +309,20 @@ class TestStepGuard(unittest.TestCase):
         result = interp.execute('+' * 66 + '.')  # 'B', far under 10M steps
         self.assertEqual(result, 'B')
 
+    def test_repl_step_limit_raises(self):
+        interp = BrainfuckInterpreter()
+        with self.assertRaises(BFStepLimitExceeded):
+            interp.execute_repl('+[]', max_steps=100)
+
+    def test_repl_guard_is_per_call(self):
+        # instruction_count accumulates across REPL calls; the cap must be
+        # measured per-call, so a tiny command after a large one must not abort.
+        interp = BrainfuckInterpreter()
+        interp.execute_repl('+' * 100)            # ~100 cumulative steps
+        result = interp.execute_repl('+.', max_steps=50)  # only 2 steps this call
+        self.assertEqual(interp.memory[0], 101 % 256)
+        self.assertEqual(result, chr(101))
+
 
 class TestOptimizer(unittest.TestCase):
     """Test BF code optimizer."""
