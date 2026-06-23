@@ -379,7 +379,9 @@ def main():
             partial = interpreter._decode_output()
             if partial:
                 print(partial, end='')
-            print(f"\nError: {e} (use --max-steps 0 for unlimited)", file=sys.stderr)
+                sys.stdout.flush()  # keep partial output ahead of the stderr error on a merged stream
+            prefix = "\n" if partial else ""
+            print(f"{prefix}Error: {e} (use --max-steps 0 for unlimited)", file=sys.stderr)
             sys.exit(1)
         except Exception as e:
             print(f"Error: {e}")
