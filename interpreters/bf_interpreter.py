@@ -4,6 +4,7 @@ Pure Python Brainfuck Interpreter
 A minimalist interpreter for the ultimate minimalist language
 """
 
+import argparse
 import sys
 from typing import List, Optional
 
@@ -307,7 +308,7 @@ class BrainfuckInterpreter:
 def main():
     """Command line interface for the brainfuck interpreter."""
     if len(sys.argv) < 2:
-        print("Usage: python bf_interpreter.py <program.bf> [input] [--debug] [--interactive]")
+        print("Usage: python bf_interpreter.py <program.bf> [input] [--debug] [--interactive] [--max-steps N]")
         print("   or: python bf_interpreter.py --repl")
         sys.exit(1)
     
@@ -337,29 +338,48 @@ def main():
             except Exception as e:
                 print(f"Error: {e}")
     else:
-        filename = sys.argv[1]
-        flags = {a for a in sys.argv[2:] if a.startswith('--')}
-        positional = [a for a in sys.argv[2:] if not a.startswith('--')]
-        input_data = positional[0] if positional else ""
-        debug = '--debug' in flags
-        interactive = '--interactive' in flags or not input_data
-        
+        parser = argparse.ArgumentParser(
+            prog='bf_interpreter.py',
+            description='Run a brainfuck program.',
+        )
+        parser.add_argument('filename', help='path to the .bf source file')
+        parser.add_argument('input', nargs='?', default='',
+                            help='optional input string for the program')
+        parser.add_argument('--debug', action='store_true',
+                            help='print execution trace and final memory state')
+        parser.add_argument('--interactive', action='store_true',
+                            help='read stdin when the input buffer is exhausted')
+        parser.add_argument('--max-steps', type=int, default=10_000_000, metavar='N',
+                            help='abort after N steps (0 = unlimited); default 10,000,000')
+        opts = parser.parse_args()
+
+        # Auto-interactive when no input string is supplied (preserves prior behavior).
+        interactive = opts.interactive or not opts.input
+        interpreter = BrainfuckInterpreter(interactive=interactive)
+
         try:
-            with open(filename, 'r') as f:
+            with open(opts.filename, 'r') as f:
                 code = f.read()
-            
-            interpreter = BrainfuckInterpreter(interactive=interactive)
-            result = interpreter.execute(code, input_data, debug=debug)
-            
+
+            result = interpreter.execute(code, opts.input, debug=opts.debug,
+                                         max_steps=opts.max_steps)
+
             if result:
                 print(result, end='')
-            
-            if debug:
+
+            if opts.debug:
                 print(f"\nFinal memory state:")
                 print(interpreter.visualize_memory())
-                
+
         except FileNotFoundError:
-            print(f"Error: File '{filename}' not found")
+            print(f"Error: File '{opts.filename}' not found")
+            sys.exit(1)
+        except BFStepLimitExceeded as e:
+            # Emit whatever the program produced before the abort, then report.
+            partial = interpreter._decode_output()
+            if partial:
+                print(partial, end='')
+            print(f"\nError: {e} (use --max-steps 0 for unlimited)", file=sys.stderr)
             sys.exit(1)
         except Exception as e:
             print(f"Error: {e}")
