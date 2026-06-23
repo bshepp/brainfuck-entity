@@ -9,7 +9,7 @@ import os
 import time
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-from interpreters.bf_interpreter import BrainfuckInterpreter
+from interpreters.bf_interpreter import BrainfuckInterpreter, BFStepLimitExceeded
 
 
 class ProfilingInterpreter(BrainfuckInterpreter):
@@ -36,7 +36,7 @@ class ProfilingInterpreter(BrainfuckInterpreter):
 
             if self.instruction_count > max_steps:
                 self.elapsed = time.perf_counter() - start_time
-                raise RuntimeError(
+                raise BFStepLimitExceeded(
                     f"Exceeded {max_steps:,} steps -- possible infinite loop"
                 )
 

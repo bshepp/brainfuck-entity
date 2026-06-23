@@ -435,6 +435,12 @@ class TestProfiler(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             interp.execute('+[]', max_steps=100)
 
+    def test_step_limit_raises_bf_exception(self):
+        from interpreters.bf_interpreter import BFStepLimitExceeded
+        interp = ProfilingInterpreter()
+        with self.assertRaises(BFStepLimitExceeded):
+            interp.execute('+[]', max_steps=100)
+
     def test_report_generation(self):
         interp = ProfilingInterpreter()
         interp.execute('++[-]')
