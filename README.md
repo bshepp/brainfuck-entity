@@ -166,7 +166,6 @@ python -m unittest tests.test_interpreter -v
 > If `pytest` aborts during plugin collection due to an unrelated global plugin
 > on your machine, disable plugin autoload:
 > `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest tests/ -q`
-```
 
 ## Learning Path
 
