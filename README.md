@@ -89,14 +89,19 @@ brainfuck-entity/
 │   └── bf_profiler.py         # Execution profiler with statistics
 ├── tests/                     # Test suite (76 tests)
 │   └── test_interpreter.py    # Unit, integration, and program output tests
+├── tutorials/                 # Progressive lessons (the tape to ASCII art)
+├── challenges/                # Self-directed code-golf exercises
 └── philosophy/                # Computational philosophy writings
     └── computational-minimalism.md
 ```
 
+### Learn and practice
+- [`tutorials/`](tutorials/) -- a six-lesson path from the tape to loops, input, and art
+- [`challenges/`](challenges/) -- five exercises with exact expected outputs
+
 ### Planned / Future Work
-- `tutorials/` -- Progressive learning materials
-- `challenges/` -- Code golf and optimization challenges
 - Additional philosophy writings (digital zen, constraint creativity, emergence)
+- Solutions/reference gallery for the challenges (kept separate so they stay exercises)
 
 ## Example Programs
 

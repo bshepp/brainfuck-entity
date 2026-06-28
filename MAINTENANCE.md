@@ -19,6 +19,13 @@ Periodic project checkups: state of the tree, tests, docs, and repo metadata.
 - All BF authored and verified against the interpreter before commit; spec and
   plan under `docs/superpowers/`. Foundation step guard backstops the interactive
   programs against runaway input.
+- Tutorials & Challenges (sub-project 3 of 3): added `tutorials/` (six progressive
+  lessons + index) and `challenges/` (five exercises + index), teaching from the
+  verified program library and exercising the existing tools. Every runnable BF
+  snippet was interpreter-verified; no code changed (suite stays at 76). Built
+  unattended on branch `tutorials` and pushed for review — NOT merged to master,
+  because the design was not user-approved first (see
+  `docs/superpowers/specs/2026-06-23-tutorials-design.md`). Reversible.
 
 ## 2026-06-22
 

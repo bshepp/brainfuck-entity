@@ -68,6 +68,8 @@ brainfuck-entity/
 │   └── bf_profiler.py         # Execution profiling with statistics
 ├── tests/                     # Test suite (76 tests)
 │   └── test_interpreter.py    # Unit, integration, and program tests
+├── tutorials/                 # Progressive lessons (markdown)
+├── challenges/                # Self-directed code-golf exercises (markdown)
 ├── philosophy/                # Computational philosophy writings
 └── pyproject.toml             # Python project metadata
 ```
