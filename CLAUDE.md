@@ -66,7 +66,7 @@ brainfuck-entity/
 ├── tools/                     # Development utilities
 │   ├── bf_validator.py        # Syntax validation and diagnostics
 │   └── bf_profiler.py         # Execution profiling with statistics
-├── tests/                     # Test suite (66 tests)
+├── tests/                     # Test suite (76 tests)
 │   └── test_interpreter.py    # Unit, integration, and program tests
 ├── philosophy/                # Computational philosophy writings
 └── pyproject.toml             # Python project metadata

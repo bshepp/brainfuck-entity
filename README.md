@@ -79,15 +79,15 @@ brainfuck-entity/
 │   ├── bf_interpreter.py      # Main interpreter (includes REPL mode)
 │   └── bf_optimizer.py        # Peephole code optimizer
 ├── programs/                  # BF programs organized by category
-│   ├── hello-world/           # Introduction programs
-│   ├── mathematical/          # Math and algorithms
-│   ├── games/                 # Interactive programs (guess the number)
-│   ├── art/                   # ASCII art generators (star, mandala)
-│   └── philosophy/            # Computational zen koans
+│   ├── hello-world/           # Introduction programs (hello, digits, alphabet)
+│   ├── mathematical/          # Math and algorithms (add, multiply, subtract)
+│   ├── games/                 # Interactive programs (guess the number, secret knock, even or odd)
+│   ├── art/                   # ASCII art generators (star, mandala, triangle, box)
+│   └── philosophy/            # Computational zen koans (zen koan, less is more, empty is full)
 ├── tools/                     # Development utilities
 │   ├── bf_validator.py        # Syntax validator with diagnostics
 │   └── bf_profiler.py         # Execution profiler with statistics
-├── tests/                     # Test suite (66 tests)
+├── tests/                     # Test suite (76 tests)
 │   └── test_interpreter.py    # Unit, integration, and program output tests
 └── philosophy/                # Computational philosophy writings
     └── computational-minimalism.md

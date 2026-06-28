@@ -258,6 +258,52 @@ class TestProgramOutputs(unittest.TestCase):
         result = self._run_file('programs/games/guess_the_number.bf', '35')
         self.assertEqual(result, 'N\nY\n')
 
+    # --- Library expansion (2026-06-23) ---
+
+    def test_digits(self):
+        result = self._run_file('programs/hello-world/digits.bf')
+        self.assertEqual(result, '0123456789\n')
+
+    def test_alphabet(self):
+        result = self._run_file('programs/hello-world/alphabet.bf')
+        self.assertEqual(result, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ\n')
+
+    def test_multiply(self):
+        self.assertEqual(self._run_file('programs/mathematical/multiply.bf', '23'), '6')
+        self.assertEqual(self._run_file('programs/mathematical/multiply.bf', '14'), '4')
+        self.assertEqual(self._run_file('programs/mathematical/multiply.bf', '31'), '3')
+
+    def test_subtract(self):
+        self.assertEqual(self._run_file('programs/mathematical/subtract.bf', '73'), '4')
+        self.assertEqual(self._run_file('programs/mathematical/subtract.bf', '90'), '9')
+        self.assertEqual(self._run_file('programs/mathematical/subtract.bf', '55'), '0')
+
+    def test_even_or_odd(self):
+        self.assertEqual(self._run_file('programs/games/even_or_odd.bf', '4'), 'E')
+        self.assertEqual(self._run_file('programs/games/even_or_odd.bf', '7'), 'O')
+        self.assertEqual(self._run_file('programs/games/even_or_odd.bf', '0'), 'E')
+
+    def test_secret_knock(self):
+        self.assertEqual(self._run_file('programs/games/secret_knock.bf', '7'), '!')
+        self.assertEqual(self._run_file('programs/games/secret_knock.bf', '147'), '..!')
+        self.assertEqual(self._run_file('programs/games/secret_knock.bf', '27'), '.!')
+
+    def test_triangle(self):
+        result = self._run_file('programs/art/triangle.bf')
+        self.assertEqual(result, '*\n**\n***\n****\n*****\n')
+
+    def test_box(self):
+        result = self._run_file('programs/art/box.bf')
+        self.assertEqual(result, '****\n*  *\n*  *\n****\n')
+
+    def test_less_is_more(self):
+        result = self._run_file('programs/philosophy/less_is_more.bf')
+        self.assertEqual(result, 'less is more\n')
+
+    def test_empty_is_full(self):
+        result = self._run_file('programs/philosophy/empty_is_full.bf')
+        self.assertEqual(result, 'empty is full\n')
+
 
 class TestEdgeCases(unittest.TestCase):
     """Test edge cases and unusual programs."""
