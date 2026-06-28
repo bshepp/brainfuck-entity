@@ -4,7 +4,7 @@ Periodic project checkups: state of the tree, tests, docs, and repo metadata.
 
 ## 2026-06-22
 
-- Working tree: clean before work; Foundation sub-project implemented on branch `foundation`.
+- Working tree: clean before work; Foundation sub-project implemented on branch `foundation`, then merged to `master` (fast-forward) and the branch deleted.
 - Tests: 66 / 66 passing (59 prior + 7 new step-guard tests). Run with
   `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest tests/ -q`.
 - Hardening: added `BFStepLimitExceeded` and a `max_steps` budget (default

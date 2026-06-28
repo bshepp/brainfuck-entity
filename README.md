@@ -87,7 +87,7 @@ brainfuck-entity/
 ├── tools/                     # Development utilities
 │   ├── bf_validator.py        # Syntax validator with diagnostics
 │   └── bf_profiler.py         # Execution profiler with statistics
-├── tests/                     # Test suite (59 tests)
+├── tests/                     # Test suite (66 tests)
 │   └── test_interpreter.py    # Unit, integration, and program output tests
 └── philosophy/                # Computational philosophy writings
     └── computational-minimalism.md
