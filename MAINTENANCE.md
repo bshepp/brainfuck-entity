@@ -2,6 +2,24 @@
 
 Periodic project checkups: state of the tree, tests, docs, and repo metadata.
 
+## 2026-06-23
+
+- Library sub-project (2 of 3): added 10 new BF programs, ~2 per category, each
+  with an exact-output test. Tests: 76 / 76 passing (66 prior + 10 new). Run with
+  `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest tests/ -q`.
+  - hello-world: `digits.bf`, `alphabet.bf`
+  - mathematical: `multiply.bf`, `subtract.bf` (single-digit I/O)
+  - games: `even_or_odd.bf`, `secret_knock.bf`
+  - art: `triangle.bf`, `box.bf`
+  - philosophy: `less_is_more.bf`, `empty_is_full.bf`
+- Substitution from the spec: `secret_knock.bf` replaced the planned
+  `guess_higher_lower.bf` (a correct three-way higher/lower comparison in raw BF
+  was too brittle to verify unattended). Same category and testable shape; like
+  the existing `guess_the_number.bf`, it loops until the secret digit is entered.
+- All BF authored and verified against the interpreter before commit; spec and
+  plan under `docs/superpowers/`. Foundation step guard backstops the interactive
+  programs against runaway input.
+
 ## 2026-06-22
 
 - Working tree: clean before work; Foundation sub-project implemented on branch `foundation`, then merged to `master` (fast-forward) and the branch deleted.
